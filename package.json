@@ -1,0 +1,58 @@
+{
+  "name": "@datadayrepos/libsodium-wrapper",
+  "type": "module",
+  "version": "0.0.1-beta.11",
+  "private": false,
+  "packageManager": "pnpm@8.9.0",
+  "description": "Typescript for accessing the libsodium.js for a small subset of functionalities.",
+  "author": "Ivar Strand",
+  "license": "Prop",
+  "homepage": "https://github.com/abyrint/libsodium-wrapper#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abyrint/libsodium-wrapper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abyrint/libsodium-wrapper/issues"
+  },
+  "keywords": [
+    "libsodium",
+    "argon2id",
+    "ED25519"
+  ],
+  "main": "./dist/esm/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint . --fix",
+    "release": "bumpp -r && pnpm -r publish",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typecheck": "tsc --noEmit",
+    "build": "rm -rf dist && tsc",
+    "pub": "pnpm build && npm publish --access public"
+  },
+  "dependencies": {
+    "@types/libsodium-wrappers": "0.7.14",
+    "libsodium-wrappers": "0.7.15"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "3.7.3",
+    "@datadayrepos/ni": "^0.21.8",
+    "@types/node": "22.5.1",
+    "eslint": "9.10.0",
+    "eslint-plugin-sort-keys": "2.3.5",
+    "lint-staged": "^14.0.1",
+    "pnpm": "^8.8.0",
+    "save": "^2.9.0",
+    "typescript": "5.6.2"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,vue,md}": [
+      "eslint --cache --fix"
+    ]
+  }
+}

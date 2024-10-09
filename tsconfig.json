@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "rootDir": "src",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "strict": true,
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "outDir": "dist/esm",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true // Allow JavaScript files to be compiled
+
+  },
+  // "references": [{ "path": "./tsconfig.node.json" }],
+  "include": ["src/**/*.ts", "src/**/*.js"], // Include both TypeScript and JavaScript files
+  "exclude": ["node_modules", "scripts", "**/__tests__", "dist/", "dist-test"] // we need to script to remove  "**/__tests__",  after tsc due to using vite meta.glob for reading json files in dev mode
+}

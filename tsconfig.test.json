@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "dist-test/types",
+    "outDir": "dist-test",
+    "removeComments": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "**/__tests__",
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist/",
+    "dist-test",
+    "scripts"
+  ]
+}
