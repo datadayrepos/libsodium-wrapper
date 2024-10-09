@@ -197,6 +197,59 @@ async function decryptMessage(privateKey: Uint8Array, publicKey: Uint8Array, enc
    - **Returns**:
      A promise that resolves to the decrypted content as a string if decryption is successful, or `null` if it fails
 
+---
+
+### Example Code for Encrypting Text with AES-GCM
+
+This example demonstrates how to encrypt a string using AES-GCM encryption with a derived cryptographic key. This is a wrapper over Web Crypto API.
+
+```typescript
+import { encryptWithAESGCM } from '@datadayrepos/libsodium-wrapper'
+
+async function encryptText(text: string, derivedKey: CryptoKey): Promise<string> {
+  const encryptedData = await encryptWithAESGCM(text, derivedKey)
+  return encryptedData
+}
+```
+---
+
+### Example Code for Decrypting Text with AES-GCM
+
+This example demonstrates how to decrypt an encrypted message using AES-GCM encryption. This is a wrapper over Web Crypto API.
+
+```typescript
+import { decryptWithAESGCM } from '@datadayrepos/libsodium-wrapper'
+
+async function decryptText(messageJSON: string, derivedKey: CryptoKey): Promise<string | null> {
+  const decryptedData = await decryptWithAESGCM(messageJSON, derivedKey)
+  return decryptedData
+}
+```
+
+---
+
+### Example Code for creating ramdom 32 bytes
+
+```ts
+import { generateSecureRandomBase64 as _generateSecureRandomBase64 } from '@datadayrepos/libsodium-wrapper'
+
+/**
+ * Generates a cryptographically secure random 32-byte value and returns it as a base64 encoded string.
+ *
+ * This method uses Web Crypto API in browsers or Node.js crypto module to provide robust security.
+ * It is suitable for generating keys or tokens that require high levels of randomness and security.
+ *
+ * @returns {Promise<{ error: string | null, result: string | null }>} An object with an error message if any, and the base64 encoded random string.
+ */
+export function generateSecureRandomBase64(length: number = 32): string {
+  const { error, result } = _generateSecureRandomBase64(length)
+  if (error)
+    throw new Error('Failed to _generateSecureRandomBase64 encoded string')
+
+  return result
+}
+```
+
 ## Copyright and License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
