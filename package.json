@@ -7,13 +7,13 @@
   "description": "Typescript for accessing the libsodium.js for a small subset of functionalities.",
   "author": "Ivar Strand",
   "license": "Prop",
-  "homepage": "https://github.com/abyrint/libsodium-wrapper#readme",
+  "homepage": "https://github.com/datadayrepos/libsodium-wrapper#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abyrint/libsodium-wrapper.git"
+    "url": "git+https://github.com/datadayrepos/libsodium-wrapper.git"
   },
   "bugs": {
-    "url": "https://github.com/abyrint/libsodium-wrapper/issues"
+    "url": "https://github.com/datadayrepos/libsodium-wrapper/issues"
   },
   "keywords": [
     "libsodium",
