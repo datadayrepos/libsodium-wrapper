@@ -14,24 +14,18 @@ export type KeyPairResult = {
   private: Uint8Array
 }
 
-// Generate a Curve25519 key pair
-export async function createCurve25519(): Promise<{ error: string | null, result: KeyPairResult | null }> {
-  await sodiumReady
-  // 1. Generate ECC key pair
-  const curve25519KeyPair = crypto_box_keypair()
+export async function createCurve25519(): Promise<KeyPairResult> {
+  // Ensure libsodium is ready
+  await sodiumReady;
 
-  // 2. Generate JWKS
-  if (curve25519KeyPair.publicKey && curve25519KeyPair.privateKey) {
-    return {
-      error: null,
-      result: {
-        private: curve25519KeyPair.privateKey,
-        public: curve25519KeyPair.publicKey,
-      },
-    }
-  }
+  // Generate ECC key pair
+  const curve25519KeyPair = crypto_box_keypair();
 
-  return { error: 'key pair undefined', result: null }
+  // Return the key pair (public and private)
+  return {
+    private: curve25519KeyPair.privateKey,
+    public: curve25519KeyPair.publicKey,
+  };
 }
 
 // Encrypt content using a public key

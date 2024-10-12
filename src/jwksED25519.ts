@@ -40,34 +40,24 @@ function createEd25519JWKS(publicKey: string, privateKey: string): JWKSKeyPair {
   return jwkPair
 }
 
-// Function to create an ED25519 key pair
-async function createEd25519KeyPair(): Promise<{ error: string | null, publicKey: string | null, privateKey: string | null }> {
+export async function createEd25519KeyPair(): Promise<{ publicKey: string, privateKey: string }> {
+  // Ensure sodium is ready
   await sodiumReady
 
-  try {
-    const keyPair = crypto_sign_keypair()
-    return {
-      error: null,
-      privateKey: to_base64(keyPair.privateKey),
-      publicKey: to_base64(keyPair.publicKey),
-    }
-  }
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  catch (e) {
-    return { error: 'Failed to create ED25519 key pair', privateKey: null, publicKey: null }
+  // Generate Ed25519 key pair
+  const keyPair = crypto_sign_keypair()
+
+  // Return the public and private keys as base64
+  return {
+    privateKey: to_base64(keyPair.privateKey),
+    publicKey: to_base64(keyPair.publicKey),
   }
 }
 
-export async function createEd25519JwkPair(): Promise<{ error: string | null, result: JWKSKeyPair | null }> {
-  // 1. Generate ED25519 key pair
+export async function createEd25519JwkPair(): Promise<JWKSKeyPair> {
+  // Generate Ed25519 key pair
   const keyPair = await createEd25519KeyPair()
-  if (keyPair.error)
-    return { error: keyPair.error, result: null }
-  // 3. Generate JWKS
-  if (keyPair.publicKey && keyPair.privateKey) {
-    const jwks = createEd25519JWKS(keyPair.publicKey, keyPair.privateKey)
-    return { error: null, result: jwks }
-  }
 
-  return { error: 'key pir undefined', result: null }
+  // Generate JWKS from the key pair
+  return createEd25519JWKS(keyPair.publicKey, keyPair.privateKey)
 }

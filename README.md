@@ -57,6 +57,33 @@ This library provides functionality for generating ED25519 key pairs and creatin
 
 To create an ED25519 key pair and generate a corresponding JWKS representation, import the functions provided and use them as demonstrated in the examples below.
 
+Here’s the updated documentation reflecting the new, streamlined approach that removes unnecessary error handling within the functions:
+
+---
+
+### Creating Curve25519 Key Pairs using @datadayrepos/libsodium-wrapper
+
+This library provides a function for generating Curve25519 key pairs suitable for encryption and decryption operations using elliptic curve cryptography. The keys can be used for secure communication and other cryptographic purposes.
+
+#### Example Code for Creating a Curve25519 Key Pair
+
+This example demonstrates how to generate a Curve25519 key pair using the library.
+
+```typescript
+import { createCurve25519 } from '@datadayrepos/libsodium-wrapper'
+
+async function generateCurve25519KeyPair() {
+  const keyPair = await createCurve25519()
+  return keyPair // keyPair will contain both public and private keys
+}
+```
+
+---
+
+### Creating ED25519 JWKS Key Pairs using @datadayrepos/libsodium-wrapper
+
+This library also provides functions for generating ED25519 key pairs and converting them into a JSON Web Key Set (JWKS) format, which can be used for signing and verifying purposes in applications such as JWT (JSON Web Token).
+
 #### Example Code for Creating a JWKS Key Pair
 
 This example demonstrates how to generate an ED25519 key pair and convert it into a JWKS-compatible format:
@@ -65,10 +92,8 @@ This example demonstrates how to generate an ED25519 key pair and convert it int
 import { createEd25519JwkPair } from '@datadayrepos/libsodium-wrapper'
 
 async function generateJWKS() {
-  const jwkResult = await createEd25519JwkPair()
-  if (res.error)
-    throw new Error('Failed to generate hash')
-  return res.result
+  const jwkPair = await createEd25519JwkPair()
+  return jwkPair // jwkPair contains both public and private keys in JWKS format
 }
 ```
 
@@ -107,36 +132,6 @@ async function generateSignedJwt(privateJwk, header = {}, body = {}) {
      An object with:
      - `error`: A string containing an error message if the signing fails, or `null` if successful.
      - `result`: The signed JWT string if successful, or `null` if an error occurred.
-
----
-
-### Creating Curve25519 Key Pairs using @datadayrepos/libsodium-wrapper
-
-This library provides a function for generating Curve25519 key pairs suitable for encryption and decryption operations using elliptic curve cryptography. The keys can be used for secure communication and other cryptographic purposes.
-
-#### Example Code for Creating a Curve25519 Key Pair
-
-This example demonstrates how to generate a Curve25519 key pair using the library.
-
-```typescript
-import { createCurve25519 } from '@datadayrepos/libsodium-wrapper'
-
-async function generateCurve25519KeyPair() {
-  const keyPairResult = await createCurve25519()
-  if (keyPairResult.error)
-    throw new Error('Failed to create Curve25519 key pair')
-  return keyPairResult.result
-}
-```
-
-#### Function Details
-
-1. **`createCurve25519(): Promise<{ error: string | null, result: KeyPairResult | null }>`**
-   - This function generates a new Curve25519 key pair.
-   - **Returns**:
-     An object with:
-     - `error`: A string containing an error message if key pair generation fails, or `null` if successful.
-     - `result`: An object containing the `private` and `public` keys in their raw form if successful, or `null` if an error occurred.
 
 ---
 
@@ -199,57 +194,6 @@ async function decryptMessage(privateKey: Uint8Array, publicKey: Uint8Array, enc
 
 ---
 
-### Example Code for Encrypting Text with AES-GCM
-
-This example demonstrates how to encrypt a string using AES-GCM encryption with a derived cryptographic key. This is a wrapper over Web Crypto API.
-
-```typescript
-import { encryptWithAESGCM } from '@datadayrepos/libsodium-wrapper'
-
-async function encryptText(text: string, derivedKey: CryptoKey): Promise<string> {
-  const encryptedData = await encryptWithAESGCM(text, derivedKey)
-  return encryptedData
-}
-```
----
-
-### Example Code for Decrypting Text with AES-GCM
-
-This example demonstrates how to decrypt an encrypted message using AES-GCM encryption. This is a wrapper over Web Crypto API.
-
-```typescript
-import { decryptWithAESGCM } from '@datadayrepos/libsodium-wrapper'
-
-async function decryptText(messageJSON: string, derivedKey: CryptoKey): Promise<string | null> {
-  const decryptedData = await decryptWithAESGCM(messageJSON, derivedKey)
-  return decryptedData
-}
-```
-
----
-
-### Example Code for creating ramdom 32 bytes
-
-```ts
-import { generateSecureRandomBase64 as _generateSecureRandomBase64 } from '@datadayrepos/libsodium-wrapper'
-
-/**
- * Generates a cryptographically secure random 32-byte value and returns it as a base64 encoded string.
- *
- * This method uses Web Crypto API in browsers or Node.js crypto module to provide robust security.
- * It is suitable for generating keys or tokens that require high levels of randomness and security.
- *
- * @returns {Promise<{ error: string | null, result: string | null }>} An object with an error message if any, and the base64 encoded random string.
- */
-export function generateSecureRandomBase64(length: number = 32): string {
-  const { error, result } = _generateSecureRandomBase64(length)
-  if (error)
-    throw new Error('Failed to _generateSecureRandomBase64 encoded string')
-
-  return result
-}
-```
-
 ## Copyright and License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed by Ivar Strand under the MIT License. See the [LICENSE](LICENSE) file for details.
