@@ -16,6 +16,9 @@ export type Argon2IDOptions = {
   outputLength?: number // Output length in bytes
 }
 
+// eslint-disable-next-line antfu/no-top-level-await
+await sodiumReady // Ensure libsodium is ready before calling any functions
+
 /**
  * This module provides a utility function for creating Argon2ID hashes using the
  * `libsodium` library. Argon2ID is a secure password hashing algorithm that combines
@@ -41,7 +44,7 @@ export type Argon2IDOptions = {
  *
  * const password = 'my-secure-password'
  * const options = {
- *   memoryLimit: 64 * 1024 * 1024, // 64 MB
+ *   memoryLimit: 46 * 1024 * 1024, // 46 MB
  *   opsLimit: 1, // Number of passes
  * }
  * The p parameter (parallelism) is not directly available in the crypto_pwhash function.
@@ -59,7 +62,7 @@ export type Argon2IDOptions = {
  */
 export async function createArgon2IDHash(password: string, options: Argon2IDOptions = {}): Promise<{ error: string | null, result: string | null }> {
   await sodiumReady
-
+  // console.log(sodiumReady)
   const memoryLimit = options.memoryLimit || crypto_pwhash_MEMLIMIT_INTERACTIVE
   const opsLimit = options.opsLimit || crypto_pwhash_OPSLIMIT_INTERACTIVE
   const outputLength = options.outputLength || 32
@@ -76,8 +79,9 @@ export async function createArgon2IDHash(password: string, options: Argon2IDOpti
     )
     return { error: null, result: to_base64(hash) }
   }
-  // eslint-disable-next-line unused-imports/no-unused-vars
+
   catch (e) {
-    return { error: 'Failed to create Argon2ID hash', result: null }
+    const err = e as unknown as Error
+    return { error: `Failed to create Argon2ID hash: ${err.message}`, result: null }
   }
 }

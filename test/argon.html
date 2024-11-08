@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            background-color: #1b1b1b;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin-left: 20px;
+        }
+
+        h1 {
+            color: #ffffff;
+        }
+
+        p {
+            color: #b0b0b0;
+        }
+
+        button {
+            background-color: #3b3b3b;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #333333;
+        }
+
+        pre {
+            background-color: #2f2f2f;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        input, select {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argon2ID Test</title>
+    <script type="module">
+        import * as main from '../dist/index.js'; // Adjust this path if necessary
+        window.main = main;
+    </script>
+    <script>
+        async function deriveArgon2IDHash() {
+            const password = document.getElementById('passwordInput').value;
+            const memory = parseInt(document.getElementById('memoryInput').value) * 1024 * 1024; // Convert MB to bytes
+            const opsLimit = parseInt(document.getElementById('opsLimitInput').value);
+            const salt = window.crypto.getRandomValues(new Uint8Array(16)); // Generate a random salt
+
+            const options = {
+                memoryLimit: memory,
+                opsLimit: opsLimit,
+            };
+
+            const startTime = performance.now();
+
+            try {
+                const { result, error } = await window.main.createArgon2IDHash(password, options);
+                const endTime = performance.now();
+                const timeTaken = endTime - startTime;
+
+                if (error) {
+                    document.getElementById('output').textContent = `Error: ${error}`;
+                } else {
+                    document.getElementById('output').textContent = `Generated Argon2ID Hash (Base64): ${result}\nTime Taken: ${timeTaken.toFixed(2)} ms`;
+                }
+            } catch (e) {
+                console.error('Error deriving Argon2ID hash:', e);
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Argon2ID Hash Derivation Test Interface</h1>
+    <p>Enter a password and customize the memory and time costs, then derive an Argon2ID hash as a base64 string.</p>
+
+    <label for="passwordInput">Password:</label>
+    <input type="text" id="passwordInput" placeholder="Enter password" />
+
+    <label for="memoryInput">Memory (MB):</label>
+    <select id="memoryInput">
+        <option value="16">16 MB</option>
+        <option value="32">32 MB</option>
+        <option value="64">64 MB</option>
+        <option value="128">128 MB</option>
+    </select>
+
+    <label for="opsLimitInput">Iterations (Ops Limit):</label>
+    <select id="opsLimitInput">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+        <option value="6">6</option>
+    </select>
+
+    <p>Click the button below to derive the hash.</p>
+    <button onclick="deriveArgon2IDHash()">Derive Argon2ID Hash</button>
+
+    <pre id="output"></pre>
+</body>
+
+</html>
