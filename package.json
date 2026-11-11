@@ -29,13 +29,16 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "eslint . --fix",
-    "release": "bumpp -r && pnpm -r publish",
+    "release": "bumpp -r && pnpm run pack:release && pnpm run pub",
     "test": "echo \"Error: no test specified\" && exit 1",
     "typecheck": "tsc --noEmit",
     "build": "rm -rf dist && vite build && tsc --emitDeclarationOnly",
-    "pub": "pnpm build && npm publish --access public",
+    "pub": "node scripts/npm-package.mjs publish --access=public",
     "cert": "rm -rf .cert && mkdir -p .cert && mkcert -key-file ./.cert/key.pem -cert-file ./.cert/cert.pem 'localhost'",
-    "dev": "vite"
+    "dev": "vite",
+    "prepack": "node scripts/npm-package.mjs guard",
+    "prepublishOnly": "node scripts/npm-package.mjs guard",
+    "pack:release": "node scripts/npm-package.mjs pack"
   },
   "dependencies": {
     "@types/libsodium-wrappers": "0.7.14",
